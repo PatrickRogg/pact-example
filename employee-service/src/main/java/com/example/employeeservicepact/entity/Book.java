@@ -1,6 +1,8 @@
 package com.example.employeeservicepact.entity;
 
 
+import java.util.Objects;
+
 public class Book {
   private String isbn;
   private String author;
@@ -52,5 +54,21 @@ public class Book {
   @Override
   public String toString() {
     return  "isbn: " + isbn + " author: " + author + " title:" + title + "publisher: " + publisher;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Book book = (Book) o;
+    return isbn.equals(book.isbn) &&
+            author.equals(book.author) &&
+            title.equals(book.title) &&
+            publisher.equals(book.publisher);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(isbn, author, title, publisher);
   }
 }

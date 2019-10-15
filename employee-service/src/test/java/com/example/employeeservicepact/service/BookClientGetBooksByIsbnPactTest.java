@@ -50,20 +50,13 @@ public class BookClientGetBooksByIsbnPactTest {
 
   @Test
   @PactVerification
-  public void should_have_http_status_200_when_get_book_by_isbn() {
+  public void should_return_http_status_200_and_book_with_requested_isbn_when_get_book_by_isbn() {
     bookClientService = new BookClientService(mockProvider.getUrl());
+    Book expected = new Book("9780132350884", "Robert Cecil Martin",
+            "Clean Code", "Prentice Hall PTR Upper Saddle River, NJ");
     ResponseEntity<Book> response = (ResponseEntity<Book>) bookClientService.getBookBy("9780132350884");
 
     assertEquals(200, response.getStatusCode().value());
-    assertEquals("9780132350884", response.getBody().getIsbn());
-  }
-
-  @Test
-  @PactVerification
-  public void should_return_book_with_requested_isbn_when_get_book_by_isbn() {
-    bookClientService = new BookClientService(mockProvider.getUrl());
-    ResponseEntity<Book> response = (ResponseEntity<Book>) bookClientService.getBookBy("9780132350884");
-
-    assertEquals("9780132350884", response.getBody().getIsbn());
+    assertEquals(expected, response.getBody());
   }
 }

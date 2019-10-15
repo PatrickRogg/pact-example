@@ -7,6 +7,84 @@
     },
     "interactions": [
         {
+            "description": "request to create a new book",
+            "request": {
+                "method": "POST",
+                "path": "/books"
+            },
+            "response": {
+                "status": 201,
+                "headers": {
+                    "Content-Type": "application/json;charset=UTF-8"
+                },
+                "body": {
+                    "author": "Robert Cecil Martin",
+                    "isbn": "9780132350884",
+                    "publisher": "Prentice Hall PTR Upper Saddle River, NJ",
+                    "title": "Clean Code"
+                },
+                "matchingRules": {
+                    "body": {
+                        "$.author": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        },
+                        "$.isbn": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        },
+                        "$.publisher": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        },
+                        "$.title": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        }
+                    }
+                }
+            },
+            "providerStates": [
+                {
+                    "name": "createBook"
+                }
+            ]
+        },
+        {
+            "description": "request to delete a book",
+            "request": {
+                "method": "DELETE",
+                "path": "/books/123456789"
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json;charset=UTF-8"
+                }
+            },
+            "providerStates": [
+                {
+                    "name": "deleteBook"
+                }
+            ]
+        },
+        {
             "description": "request for all books",
             "request": {
                 "method": "GET",
@@ -172,6 +250,82 @@
                             ],
                             "combine": "AND"
                         },
+                        "$[*].author": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        },
+                        "$[*].isbn": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        },
+                        "$[*].publisher": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        },
+                        "$[*].title": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        }
+                    }
+                }
+            },
+            "providerStates": [
+                {
+                    "name": "searchBookByBookTitle"
+                }
+            ]
+        },
+        {
+            "description": "request for book with specific book title",
+            "request": {
+                "method": "GET",
+                "path": "/books/search",
+                "query": {
+                    "bookTitle": [
+                        "Clean"
+                    ]
+                }
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json;charset=UTF-8"
+                },
+                "body": [
+                    {
+                        "author": "Robert Cecil Martin",
+                        "isbn": "9780132350884",
+                        "publisher": "Prentice Hall PTR Upper Saddle River, NJ",
+                        "title": "Clean Code"
+                    }
+                ],
+                "matchingRules": {
+                    "body": {
+                        "$": {
+                            "matchers": [
+                                {
+                                    "match": "type",
+                                    "min": 0
+                                }
+                            ],
+                            "combine": "AND"
+                        },
                         "$[*].isbn": {
                             "matchers": [
                                 {
@@ -270,6 +424,66 @@
             "providerStates": [
                 {
                     "name": "searchBookByBookTitle"
+                }
+            ]
+        },
+        {
+            "description": "request to update a new book",
+            "request": {
+                "method": "PUT",
+                "path": "/books/123456789"
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json;charset=UTF-8"
+                },
+                "body": {
+                    "author": "Robert Cecil Martin",
+                    "isbn": "9780132350883",
+                    "publisher": "Prentice Hall PTR Upper Saddle River, NJ",
+                    "title": "Clean Code"
+                },
+                "matchingRules": {
+                    "body": {
+                        "$.author": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        },
+                        "$.isbn": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        },
+                        "$.publisher": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        },
+                        "$.title": {
+                            "matchers": [
+                                {
+                                    "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        }
+                    }
+                }
+            },
+            "providerStates": [
+                {
+                    "name": "updateBook"
                 }
             ]
         }

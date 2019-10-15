@@ -16,8 +16,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class BookClientSearchBooksByBookTitlePactTest {
   private BookClientService bookClientService;
@@ -39,7 +38,7 @@ public class BookClientSearchBooksByBookTitlePactTest {
             .closeObject();
     return builder
             .given("searchBookByBookTitle")
-            .uponReceiving("request for book with specific")
+            .uponReceiving("request for book with specific book title")
             .path("/books/search")
             .query("bookTitle=Clean")
             .method("GET")
@@ -52,19 +51,13 @@ public class BookClientSearchBooksByBookTitlePactTest {
 
   @Test
   @PactVerification
-  public void should_have_http_status_200_when_get_book_by_book_titles() {
+  public void should_return_http_status_200_and_all_books_with_search_term_in_title_when_get_book_by_book_titles() {
     bookClientService = new BookClientService(mockProvider.getUrl());
+    Book[] expected = {new Book("9780132350884", "Robert Cecil Martin",
+            "Clean Code", "Prentice Hall PTR Upper Saddle River, NJ")};
     ResponseEntity<Book[]> response = (ResponseEntity<Book[]>) bookClientService.searchBooksBy("Clean");
 
     assertEquals(200, response.getStatusCode().value());
-  }
-
-  @Test
-  @PactVerification
-  public void should_have_books_with_search_term_when_get_book_by_book_title() {
-    bookClientService = new BookClientService(mockProvider.getUrl());
-    ResponseEntity<Book[]> response = (ResponseEntity<Book[]>) bookClientService.searchBooksBy("Clean");
-
-    assertTrue(response.getBody()[0].getTitle().contains("Clean"));
+    assertArrayEquals(expected, response.getBody());
   }
 }

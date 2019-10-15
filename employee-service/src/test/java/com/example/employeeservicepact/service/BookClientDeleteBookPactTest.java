@@ -5,7 +5,7 @@ import au.com.dius.pact.consumer.Pact;
 import au.com.dius.pact.consumer.PactProviderRuleMk2;
 import au.com.dius.pact.consumer.PactVerification;
 import au.com.dius.pact.consumer.dsl.DslPart;
-import au.com.dius.pact.consumer.dsl.PactDslJsonArray;
+import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
 import au.com.dius.pact.model.RequestResponsePact;
 import com.example.employeeservicepact.entity.Book;
@@ -16,10 +16,9 @@ import org.springframework.http.ResponseEntity;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-public class BookClientGetAllBooksPactTest {
+public class BookClientDeleteBookPactTest {
   private BookClientService bookClientService;
 
   @Rule
@@ -27,38 +26,27 @@ public class BookClientGetAllBooksPactTest {
           8082, this);
 
   @Pact(consumer="employee_service")
-  public RequestResponsePact createGetAllBooksPact(PactDslWithProvider builder) {
+  public RequestResponsePact createUpdateBookPact(PactDslWithProvider builder) {
     Map<String, String> headers = new HashMap<>();
     headers.put("Content-Type", "application/json;charset=UTF-8");
 
-    DslPart body = PactDslJsonArray.arrayEachLike()
-            .stringType("isbn", "9780132350884")
-            .stringType("author", "Robert Cecil Martin")
-            .stringType("title", "Clean Code")
-            .stringType("publisher", "Prentice Hall PTR Upper Saddle River, NJ")
-            .closeObject();
-
     return builder
-            .given("getAllBooks")
-            .uponReceiving("request for all books")
-            .path("/books")
-            .method("GET")
+            .given("deleteBook")
+            .uponReceiving("request to delete a book")
+            .path("/books/123456789")
+            .method("DELETE")
             .willRespondWith()
             .headers(headers)
             .status(200)
-            .body(body)
             .toPact();
   }
 
   @Test
   @PactVerification
-  public void should_return_http_status_200_and_all_books_when_get_all_books() {
+  public void should_return_http_status_200_when_delete_book() {
     bookClientService = new BookClientService(mockProvider.getUrl());
-    Book[] expected = {new Book("9780132350884", "Robert Cecil Martin",
-            "Clean Code", "Prentice Hall PTR Upper Saddle River, NJ")};
-    ResponseEntity<Book[]> response = (ResponseEntity<Book[]>) bookClientService.getAllBooks();
+    ResponseEntity<?> response = bookClientService.deleteBook("123456789");
 
     assertEquals(200, response.getStatusCode().value());
-    assertArrayEquals(expected, response.getBody());
   }
 }
