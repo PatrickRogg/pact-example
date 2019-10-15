@@ -29,16 +29,21 @@ public class BookService {
     return bookRepository.findAll();
   }
 
+  public Book getBookByIsbn(String isbn) throws IsbnNotFoundException {
+    return bookRepository.findById(isbn).orElseThrow(() -> new IsbnNotFoundException());
+  }
+
   public Book create(Book book) {
     return bookRepository.save(book);
   }
 
-  public Book update(String isbn, Book book) throws IsbnNotFoundException {
-    if(isbn.equals(book.getIsbn())) {
-      return bookRepository.save(book);
-    } else {
-      throw new IsbnNotFoundException();
-    }
+  public void update(String isbn, Book book) throws IsbnNotFoundException {
+      Book toUpdateBook = getBookByIsbn(isbn);
+      toUpdateBook.setIsbn(book.getIsbn());
+      toUpdateBook.setAuthor(book.getAuthor());
+      toUpdateBook.setTitle(book.getTitle());
+      toUpdateBook.setPublisher(book.getPublisher());
+      bookRepository.save(toUpdateBook);
   }
 
   public void deleteBookBy(String isbn) throws IsbnNotFoundException {

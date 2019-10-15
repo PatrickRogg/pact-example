@@ -27,8 +27,18 @@ public class BookController {
     return new ResponseEntity<>(books, HttpStatus.OK);
   }
 
+  @GetMapping("{isbn}")
+  public ResponseEntity<?> getBookByIsbn(@PathVariable String isbn) {
+    try {
+      Book book = bookService.getBookByIsbn(isbn);
+      return new ResponseEntity<>(book, HttpStatus.OK);
+    } catch (IsbnNotFoundException e) {
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+    }
+  }
+
   @GetMapping("search")
-  public ResponseEntity<?> searchBookBy(@RequestParam String bookTitle) {
+  public ResponseEntity<?> searchBooksBy(@RequestParam String bookTitle) {
     List<Book> filteredBooks = bookService.filterBooksBy(bookTitle);
     return new ResponseEntity<>(filteredBooks, HttpStatus.OK);
   }
@@ -39,27 +49,27 @@ public class BookController {
       Book createdBook = bookService.create(book);
       return new ResponseEntity<>(createdBook, HttpStatus.CREATED);
     } else {
-      return new ResponseEntity<>("ISBN cant be null", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>("ISBN can't be null", HttpStatus.BAD_REQUEST);
     }
   }
 
   @PutMapping("{isbn}")
   public ResponseEntity<?> updateBook(@PathVariable String isbn, @RequestBody Book book) {
     try {
-      Book updatedBook = bookService.update(isbn, book);
-      return new ResponseEntity<>(updatedBook, HttpStatus.OK);
+      bookService.update(isbn, book);
+      return new ResponseEntity<>(HttpStatus.OK);
     } catch (IsbnNotFoundException e) {
       return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
     }
   }
 
-  @DeleteMapping
+  @DeleteMapping("{isbn}")
   public ResponseEntity<?> deleteBook(@PathVariable String isbn) {
     try {
       bookService.deleteBookBy(isbn);
       return new ResponseEntity<>(HttpStatus.OK);
     } catch (IsbnNotFoundException e) {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
   }
 }

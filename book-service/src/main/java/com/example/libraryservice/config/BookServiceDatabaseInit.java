@@ -22,7 +22,7 @@ public class BookServiceDatabaseInit {
   @PostConstruct
   public void initDatabase() {
     for(int i = 0; i < 100; i++) {
-      Book book = new Book("978-3-86680-192-" + i, faker.book().author(), faker.book().title(), faker.book().publisher());
+      Book book = new Book("978386680192" + i, faker.book().author(), faker.book().title(), faker.book().publisher());
       bookService.create(book);
     }
   }
