@@ -18,52 +18,45 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-public class BookClientCreateBookPactTest {
+public class BookClientUpdateBookWithNoMatchingIsbnPactTest {
   private BookClientService bookClientService;
 
   @Rule
   public PactProviderRuleMk2 mockProvider = new PactProviderRuleMk2("book_service", this);
 
   @Pact(consumer="employee_service")
-  public RequestResponsePact createCreateBookPact(PactDslWithProvider builder) {
+  public RequestResponsePact createUpdateBookPact(PactDslWithProvider builder) {
     Map<String, String> headers = new HashMap<>();
     headers.put("Content-Type", "application/json;charset=UTF-8");
 
     DslPart request = new PactDslJsonBody()
-                .stringValue("isbn", "9780132350884")
-                .stringValue("author", "Robert Cecil Martin")
-                .stringValue("title", "Clean Code")
-                .stringValue("publisher", "Prentice Hall");
-
-    DslPart response = new PactDslJsonBody()
-            .stringType("isbn", "9780132350884")
-            .stringType("author", "Robert Cecil Martin")
-            .stringType("title", "Clean Code")
-            .stringType("publisher", "Prentice Hall");
+            .stringValue("isbn", "9780132350883")
+            .stringValue("author", "Robert Cecil Martin")
+            .stringValue("title", "Clean Code")
+            .stringValue("publisher", "Prentice Hall");
 
     return builder
-            .given("createBook")
-            .uponReceiving("request to create a new book")
-            .path("/books")
-            .method("POST")
+            .given("updateBookWithNoMatchingIsbn")
+            .uponReceiving("request to update a book, but isbn in path variable could not be found")
+            .path("/books/0")
+            .method("PUT")
             .body(request)
             .headers(headers)
             .willRespondWith()
-            .headers(headers)
-            .status(201)
-            .body(response)
+            .status(404)
+            .body("Isbn not found")
             .toPact();
   }
 
   @Test
   @PactVerification
-  public void should_return_http_status_201_and_created_book_when_create_book() {
+  public void should_return_http_status_409_and_error_message_when_update_book_was_called_with_() {
     bookClientService = new BookClientService(mockProvider.getUrl());
-    Book expected = new Book("9780132350884", "Robert Cecil Martin",
+    Book book = new Book("9780132350883", "Robert Cecil Martin",
             "Clean Code", "Prentice Hall");
-    ResponseEntity<Book> response = (ResponseEntity<Book>) bookClientService.createBook(expected);
+    ResponseEntity<?> response = bookClientService.updateBook("0", book);
 
-    assertEquals(201, response.getStatusCode().value());
-    assertEquals(expected, response.getBody());
+    assertEquals(404, response.getStatusCode().value());
+    assertEquals("Isbn not found", response.getBody());
   }
 }

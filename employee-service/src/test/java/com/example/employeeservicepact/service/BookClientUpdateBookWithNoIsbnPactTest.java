@@ -18,7 +18,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-public class BookClientUpdateBookPactTest {
+public class BookClientUpdateBookWithNoIsbnPactTest {
   private BookClientService bookClientService;
 
   @Rule
@@ -30,31 +30,34 @@ public class BookClientUpdateBookPactTest {
     headers.put("Content-Type", "application/json;charset=UTF-8");
 
     DslPart request = new PactDslJsonBody()
-            .stringValue("isbn", "9780132350883")
+            .nullValue("isbn")
             .stringValue("author", "Robert Cecil Martin")
             .stringValue("title", "Clean Code")
             .stringValue("publisher", "Prentice Hall");
 
     return builder
-            .given("updateBook")
-            .uponReceiving("request to update a book")
+            .given("updateBookWithNoIsbn")
+            .uponReceiving("request to update a book with no isbn value set")
             .path("/books/123456789")
             .method("PUT")
             .body(request)
             .headers(headers)
             .willRespondWith()
-            .status(200)
+            .status(400)
+            .body("Isbn can not be null")
             .toPact();
   }
 
   @Test
   @PactVerification
-  public void should_return_http_status_200_and_updated_book_when_update_book() {
+  public void should_return_http_status_400_when_update_book_isbn_could_not_be_found() {
     bookClientService = new BookClientService(mockProvider.getUrl());
-    Book book = new Book("9780132350883", "Robert Cecil Martin",
-            "Clean Code", "Prentice Hall");
+    Book book = new Book();
+    book.setAuthor("Robert Cecil Martin");
+    book.setPublisher("Prentice Hall");
+    book.setTitle("Clean Code");
     ResponseEntity<?> response = bookClientService.updateBook("123456789", book);
 
-    assertEquals(200, response.getStatusCode().value());
+    assertEquals(400, response.getStatusCode().value());
   }
 }

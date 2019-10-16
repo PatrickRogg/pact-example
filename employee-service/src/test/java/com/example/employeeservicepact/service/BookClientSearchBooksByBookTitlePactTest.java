@@ -16,14 +16,14 @@ import org.springframework.http.ResponseEntity;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 public class BookClientSearchBooksByBookTitlePactTest {
   private BookClientService bookClientService;
 
   @Rule
-  public PactProviderRuleMk2 mockProvider = new PactProviderRuleMk2("book_service", "localhost",
-          8082, this);
+  public PactProviderRuleMk2 mockProvider = new PactProviderRuleMk2("book_service", this);
 
   @Pact(consumer="employee_service")
   public RequestResponsePact createGetBookByIsbnPact(PactDslWithProvider builder) {
@@ -34,7 +34,7 @@ public class BookClientSearchBooksByBookTitlePactTest {
             .stringType("isbn", "9780132350884")
             .stringType("author", "Robert Cecil Martin")
             .stringType("title", "Clean Code")
-            .stringType("publisher", "Prentice Hall PTR Upper Saddle River, NJ")
+            .stringType("publisher", "Prentice Hall")
             .closeObject();
     return builder
             .given("searchBookByBookTitle")
@@ -54,7 +54,7 @@ public class BookClientSearchBooksByBookTitlePactTest {
   public void should_return_http_status_200_and_all_books_with_search_term_in_title_when_get_book_by_book_titles() {
     bookClientService = new BookClientService(mockProvider.getUrl());
     Book[] expected = {new Book("9780132350884", "Robert Cecil Martin",
-            "Clean Code", "Prentice Hall PTR Upper Saddle River, NJ")};
+            "Clean Code", "Prentice Hall")};
     ResponseEntity<Book[]> response = (ResponseEntity<Book[]>) bookClientService.searchBooksBy("Clean");
 
     assertEquals(200, response.getStatusCode().value());

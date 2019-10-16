@@ -18,7 +18,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-public class BookClientCreateBookPactTest {
+public class BookClientCreateBookWithNoIsbnPactTest {
   private BookClientService bookClientService;
 
   @Rule
@@ -30,40 +30,35 @@ public class BookClientCreateBookPactTest {
     headers.put("Content-Type", "application/json;charset=UTF-8");
 
     DslPart request = new PactDslJsonBody()
-                .stringValue("isbn", "9780132350884")
+                .nullValue("isbn")
                 .stringValue("author", "Robert Cecil Martin")
                 .stringValue("title", "Clean Code")
                 .stringValue("publisher", "Prentice Hall");
 
-    DslPart response = new PactDslJsonBody()
-            .stringType("isbn", "9780132350884")
-            .stringType("author", "Robert Cecil Martin")
-            .stringType("title", "Clean Code")
-            .stringType("publisher", "Prentice Hall");
-
     return builder
-            .given("createBook")
-            .uponReceiving("request to create a new book")
+            .given("createBookWithNoIsbn")
+            .uponReceiving("request to create a new book with no isbn value set")
             .path("/books")
             .method("POST")
             .body(request)
             .headers(headers)
             .willRespondWith()
-            .headers(headers)
-            .status(201)
-            .body(response)
+            .status(400)
+            .body("Isbn can not be null")
             .toPact();
   }
 
   @Test
   @PactVerification
-  public void should_return_http_status_201_and_created_book_when_create_book() {
+  public void should_return_http_status_404_and_error_message_when_create_book_without_isbn() {
     bookClientService = new BookClientService(mockProvider.getUrl());
-    Book expected = new Book("9780132350884", "Robert Cecil Martin",
-            "Clean Code", "Prentice Hall");
-    ResponseEntity<Book> response = (ResponseEntity<Book>) bookClientService.createBook(expected);
+    Book book = new Book();
+    book.setAuthor("Robert Cecil Martin");
+    book.setPublisher("Prentice Hall");
+    book.setTitle("Clean Code");
+    ResponseEntity<Book> response = (ResponseEntity<Book>) bookClientService.createBook(book);
 
-    assertEquals(201, response.getStatusCode().value());
-    assertEquals(expected, response.getBody());
+    assertEquals(400, response.getStatusCode().value());
+    assertEquals("Isbn can not be null", response.getBody());
   }
 }

@@ -30,7 +30,12 @@ public class BookClientService {
   }
 
   public ResponseEntity<?> getBookBy(String isbn) {
-    return restTemplate.getForEntity(bookServiceUrl + "/books/" + isbn, Book.class);
+    try {
+      return restTemplate.getForEntity(bookServiceUrl + "/books/" + isbn, Book.class);
+    } catch (HttpStatusCodeException e) {
+      return ResponseEntity.status(e.getRawStatusCode()).headers(e.getResponseHeaders())
+              .body(e.getResponseBodyAsString());
+    }
   }
 
   public ResponseEntity<?> createBook(Book book) {

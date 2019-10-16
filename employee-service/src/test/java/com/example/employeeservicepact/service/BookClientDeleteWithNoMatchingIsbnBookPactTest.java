@@ -10,12 +10,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.junit.Assert.assertEquals;
 
-public class BookClientDeleteBookPactTest {
+public class BookClientDeleteWithNoMatchingIsbnBookPactTest {
   private BookClientService bookClientService;
 
   @Rule
@@ -24,21 +21,23 @@ public class BookClientDeleteBookPactTest {
   @Pact(consumer="employee_service")
   public RequestResponsePact createUpdateBookPact(PactDslWithProvider builder) {
     return builder
-            .given("deleteBook")
-            .uponReceiving("request to delete a book")
-            .path("/books/123456789")
+            .given("deleteBookWithNoMatchingIsbn")
+            .uponReceiving("request to delete a book, but isbn in path variable could not be found")
+            .path("/books/0")
             .method("DELETE")
             .willRespondWith()
-            .status(200)
+            .status(404)
+            .body("Isbn not found")
             .toPact();
   }
 
   @Test
   @PactVerification
-  public void should_return_http_status_200_when_delete_book() {
+  public void should_return_http_status_404_when_delete_book_was_called_with_no_matching_isbn() {
     bookClientService = new BookClientService(mockProvider.getUrl());
-    ResponseEntity<?> response = bookClientService.deleteBook("123456789");
+    ResponseEntity<?> response = bookClientService.deleteBook("0");
 
-    assertEquals(200, response.getStatusCode().value());
+    assertEquals(404, response.getStatusCode().value());
+    assertEquals("Isbn not found", response.getBody());
   }
 }

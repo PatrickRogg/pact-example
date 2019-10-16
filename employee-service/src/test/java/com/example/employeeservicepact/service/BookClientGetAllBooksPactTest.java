@@ -16,15 +16,14 @@ import org.springframework.http.ResponseEntity;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 public class BookClientGetAllBooksPactTest {
   private BookClientService bookClientService;
 
   @Rule
-  public PactProviderRuleMk2 mockProvider = new PactProviderRuleMk2("book_service", "localhost",
-          8082, this);
+  public PactProviderRuleMk2 mockProvider = new PactProviderRuleMk2("book_service", this);
 
   @Pact(consumer="employee_service")
   public RequestResponsePact createGetAllBooksPact(PactDslWithProvider builder) {
@@ -35,7 +34,7 @@ public class BookClientGetAllBooksPactTest {
             .stringType("isbn", "9780132350884")
             .stringType("author", "Robert Cecil Martin")
             .stringType("title", "Clean Code")
-            .stringType("publisher", "Prentice Hall PTR Upper Saddle River, NJ")
+            .stringType("publisher", "Prentice Hall")
             .closeObject();
 
     return builder
@@ -55,7 +54,7 @@ public class BookClientGetAllBooksPactTest {
   public void should_return_http_status_200_and_all_books_when_get_all_books() {
     bookClientService = new BookClientService(mockProvider.getUrl());
     Book[] expected = {new Book("9780132350884", "Robert Cecil Martin",
-            "Clean Code", "Prentice Hall PTR Upper Saddle River, NJ")};
+            "Clean Code", "Prentice Hall")};
     ResponseEntity<Book[]> response = (ResponseEntity<Book[]>) bookClientService.getAllBooks();
 
     assertEquals(200, response.getStatusCode().value());

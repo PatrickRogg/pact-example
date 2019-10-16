@@ -18,7 +18,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-public class BookClientGetBooksByIsbnPactTest {
+public class BookClientGetBooksByIsbnWithNoMatchingIsbnPactTest {
   private BookClientService bookClientService;
 
   @Rule
@@ -26,36 +26,24 @@ public class BookClientGetBooksByIsbnPactTest {
 
   @Pact(consumer="employee_service")
   public RequestResponsePact createGetBookByIsbnPact(PactDslWithProvider builder) {
-    Map<String, String> headers = new HashMap<>();
-    headers.put("Content-Type", "application/json;charset=UTF-8");
-
-    DslPart body = new PactDslJsonBody()
-            .stringType("isbn", "9780132350884")
-            .stringType("author", "Robert Cecil Martin")
-            .stringType("title", "Clean Code")
-            .stringType("publisher", "Prentice Hall");
-
     return builder
-            .given("getBookByIsbn")
-            .uponReceiving("request for book with specific isbn")
-            .path("/books/9780132350884")
+            .given("getBookByIsbnWithNoMatchingIsbn")
+            .uponReceiving("request for book with specific isbn, but isbn in path variable could not be found")
+            .path("/books/0")
             .method("GET")
             .willRespondWith()
-            .headers(headers)
-            .status(200)
-            .body(body)
+            .status(404)
+            .body("Isbn not found")
             .toPact();
   }
 
   @Test
   @PactVerification
-  public void should_return_http_status_200_and_book_with_requested_isbn_when_get_book_by_isbn() {
+  public void should_return_http_status_409_and_book_with_requested_isbn_when_get_book_by_isbn_could_not_be_found() {
     bookClientService = new BookClientService(mockProvider.getUrl());
-    Book expected = new Book("9780132350884", "Robert Cecil Martin",
-            "Clean Code", "Prentice Hall");
-    ResponseEntity<Book> response = (ResponseEntity<Book>) bookClientService.getBookBy("9780132350884");
+    ResponseEntity<?> response =  bookClientService.getBookBy("0");
 
-    assertEquals(200, response.getStatusCode().value());
-    assertEquals(expected, response.getBody());
+    assertEquals(404, response.getStatusCode().value());
+    assertEquals("Isbn not found", response.getBody());
   }
 }
