@@ -51,12 +51,19 @@ public class BookClientGetAllBooksPactTest {
 
   @Test
   @PactVerification
-  public void should_return_http_status_200_and_all_books_when_get_all_books() {
+  public void should_return_all_books_with_status_code_200_when_get_all_books() {
+    // arrange
     bookClientService = new BookClientService(mockProvider.getUrl());
-    Book[] expected = {new Book("9780132350884", "Robert Cecil Martin",
-            "Clean Code", "Prentice Hall")};
-    ResponseEntity<Book[]> response = (ResponseEntity<Book[]>) bookClientService.getAllBooks();
+    Book[] expected = {
+            new Book("9780132350884", "Robert Cecil Martin", "Clean Code",
+                    "Prentice Hall")
+    };
 
+    // act
+    ResponseEntity<Book[]> response =
+            (ResponseEntity<Book[]>) bookClientService.getAllBooks();
+
+    // assert
     assertEquals(200, response.getStatusCode().value());
     assertArrayEquals(expected, response.getBody());
   }

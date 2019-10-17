@@ -11,7 +11,6 @@ import com.example.libraryservice.entity.Book;
 import com.example.libraryservice.exceptions.IsbnNotFoundException;
 import org.junit.Before;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -25,7 +24,6 @@ import static org.mockito.Mockito.*;
 @Provider("book_service")
 @PactFolder("../pacts")
 public class BookControllerEmployeeServiceTest {
-  private BookController bookController;
 
   @Mock
   private BookService bookService;
@@ -36,15 +34,16 @@ public class BookControllerEmployeeServiceTest {
   @Before
   public void setup() {
     MockitoAnnotations.initMocks(this);
-    bookController = new BookController(bookService);
+    BookController bookController = new BookController(bookService);
     target.setControllers(bookController);
   }
 
   @State("getAllBooks")
   public void getAllBooks() {
+    // arrange
     List<Book> books = new ArrayList<>();
-    books.add(new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall"));
-    books.add(new Book("9788131722428", "Andy Hunt", "The Pragmatic Programmer", "Addison Wesley"));
+    books.add(new Book("9780132350884", "Robert Cecil Martin",
+            "Clean Code", "Prentice Hall"));
     when(bookService.getAllBooks()).thenReturn(books);
   }
 

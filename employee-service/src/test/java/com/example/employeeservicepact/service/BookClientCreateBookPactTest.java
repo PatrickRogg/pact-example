@@ -22,7 +22,8 @@ public class BookClientCreateBookPactTest {
   private BookClientService bookClientService;
 
   @Rule
-  public PactProviderRuleMk2 mockProvider = new PactProviderRuleMk2("book_service", this);
+  public PactProviderRuleMk2 mockProvider = new PactProviderRuleMk2(
+          "book_service", this);
 
   @Pact(consumer="employee_service")
   public RequestResponsePact createCreateBookPact(PactDslWithProvider builder) {
