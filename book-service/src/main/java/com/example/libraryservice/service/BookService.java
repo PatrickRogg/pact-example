@@ -3,14 +3,12 @@ package com.example.libraryservice.service;
 import com.example.libraryservice.entity.Book;
 import com.example.libraryservice.exceptions.IsbnNotFoundException;
 import com.example.libraryservice.repository.BookRepository;
-import com.example.libraryservice.repository.specification.BookSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.List;
-
-import static org.springframework.data.jpa.domain.Specification.where;
 
 @Service
 @Transactional
@@ -35,13 +33,13 @@ public class BookService {
     return bookRepository.save(book);
   }
 
-  public void update(String isbn, Book book) throws IsbnNotFoundException {
+  public Book update(String isbn, Book book) throws IsbnNotFoundException {
       Book toUpdateBook = getBookByIsbn(isbn);
       toUpdateBook.setIsbn(book.getIsbn());
       toUpdateBook.setAuthor(book.getAuthor());
       toUpdateBook.setTitle(book.getTitle());
       toUpdateBook.setPublisher(book.getPublisher());
-      bookRepository.save(toUpdateBook);
+      return bookRepository.save(toUpdateBook);
   }
 
   public void deleteBookBy(String isbn) throws IsbnNotFoundException {
@@ -53,6 +51,6 @@ public class BookService {
   }
 
   public List<Book> filterBooksBy(String bookTitle) {
-    return bookRepository.findAll(where(BookSpecification.hasTitle(bookTitle)));
+    return bookRepository.findByTitle(bookTitle);
   }
 }
