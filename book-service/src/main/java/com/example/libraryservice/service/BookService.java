@@ -35,7 +35,7 @@ public class BookService {
   public Book update(String isbn, Book book) throws IsbnNotFoundException {
       Book toUpdateBook = getBookByIsbn(isbn);
       toUpdateBook.setIsbn(book.getIsbn());
-      toUpdateBook.setAuthor(book.getAuthor());
+      toUpdateBook.setAuthors(book.getAuthors());
       toUpdateBook.setTitle(book.getTitle());
       toUpdateBook.setPublisher(book.getPublisher());
       return bookRepository.save(toUpdateBook);

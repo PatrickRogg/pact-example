@@ -2,19 +2,24 @@ package com.example.libraryservice.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
 public class Book {
   @Id
+  @NotNull
   private String isbn;
-  private String author;
+  @NotNull
+  private String authors;
+  @NotNull
   private String title;
+  @NotNull
   private String publisher;
 
-  public Book(String isbn, String author, String title, String publisher) {
+  public Book(String isbn, String authors, String title, String publisher) {
     this.isbn = isbn;
-    this.author = author;
+    this.authors = authors;
     this.title = title;
     this.publisher = publisher;
   }
@@ -30,12 +35,12 @@ public class Book {
     this.isbn = isbn;
   }
 
-  public String getAuthor() {
-    return author;
+  public String getAuthors() {
+    return authors;
   }
 
-  public void setAuthor(String author) {
-    this.author = author;
+  public void setAuthors(String authors) {
+    this.authors = authors;
   }
 
   public String getTitle() {
@@ -60,13 +65,13 @@ public class Book {
     if (o == null || getClass() != o.getClass()) return false;
     Book book = (Book) o;
     return isbn.equals(book.isbn) &&
-            author.equals(book.author) &&
+            authors.equals(book.authors) &&
             title.equals(book.title) &&
             publisher.equals(book.publisher);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(isbn, author, title, publisher);
+    return Objects.hash(isbn, authors, title, publisher);
   }
 }

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +50,7 @@ public class BookController {
   }
 
   @PostMapping
-  public ResponseEntity<?> createBook(@RequestBody Book book) {
+  public ResponseEntity<?> createBook(@RequestBody @Valid Book book) {
     if(book.getIsbn() != null) {
       Book createdBook = bookService.create(book);
       return ResponseEntity.status(201).contentType(MediaType.APPLICATION_JSON_UTF8).body(createdBook);
@@ -59,7 +60,7 @@ public class BookController {
   }
 
   @PutMapping("{isbn}")
-  public ResponseEntity<?> updateBook(@PathVariable String isbn, @RequestBody Book book) {
+  public ResponseEntity<?> updateBook(@PathVariable String isbn, @RequestBody @Valid Book book) {
     if(book.getIsbn() == null) {
       return ResponseEntity.status(400).body("Isbn can not be null");
     }
