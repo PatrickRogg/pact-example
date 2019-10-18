@@ -11,12 +11,21 @@ public class Book {
   private String author;
   private String title;
   private String publisher;
+  private int pages;
 
   public Book(String isbn, String author, String title, String publisher) {
     this.isbn = isbn;
     this.author = author;
     this.title = title;
     this.publisher = publisher;
+  }
+
+  public Book(String isbn, String author, String title, String publisher, int pages) {
+    this.isbn = isbn;
+    this.author = author;
+    this.title = title;
+    this.publisher = publisher;
+    this.pages = pages;
   }
 
   public Book() {
@@ -52,6 +61,14 @@ public class Book {
 
   public void setPublisher(String publisher) {
     this.publisher = publisher;
+  }
+
+  public int getPages() {
+    return pages;
+  }
+
+  public void setPages(int pages) {
+    this.pages = pages;
   }
 
   @Override
