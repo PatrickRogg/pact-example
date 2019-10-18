@@ -39,7 +39,7 @@ public class BookClientGetBooksByIsbnWithNoMatchingIsbnPactTest {
 
   @Test
   @PactVerification
-  public void should_return_http_status_409_and_book_with_requested_isbn_when_get_book_by_isbn_could_not_be_found() {
+  public void shouldReturnStatusCode404AndErrorMessageWhenGetBookByWithInvalidIsbn() {
     bookClientService = new BookClientService(mockProvider.getUrl());
     ResponseEntity<?> response =  bookClientService.getBookBy("0");
 

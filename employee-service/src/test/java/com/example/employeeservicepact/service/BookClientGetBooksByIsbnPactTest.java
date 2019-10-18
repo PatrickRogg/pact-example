@@ -49,7 +49,7 @@ public class BookClientGetBooksByIsbnPactTest {
 
   @Test
   @PactVerification
-  public void should_return_http_status_200_and_book_with_requested_isbn_when_get_book_by_isbn() {
+  public void shouldReturnStatusCode200AndBookWithIsbnWhenGetBookBy() {
     bookClientService = new BookClientService(mockProvider.getUrl());
     Book expected = new Book("9780132350884", "Robert Cecil Martin",
             "Clean Code", "Prentice Hall");

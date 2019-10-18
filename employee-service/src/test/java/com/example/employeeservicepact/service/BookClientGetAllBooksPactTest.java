@@ -51,7 +51,7 @@ public class BookClientGetAllBooksPactTest {
 
   @Test
   @PactVerification
-  public void should_return_all_books_with_status_code_200_when_get_all_books() {
+  public void shouldReturnStatusCode200AndAllBooksWhenGetAllBooks() {
     // arrange
     bookClientService = new BookClientService(mockProvider.getUrl());
     Book[] expected = {

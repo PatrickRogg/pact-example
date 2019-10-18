@@ -58,7 +58,7 @@ public class BookClientCreateBookPactTest {
 
   @Test
   @PactVerification
-  public void should_return_http_status_201_and_created_book_when_create_book() {
+  public void shouldReturnStatusCode200AndAllBooksWhenGetAllBooks() {
     bookClientService = new BookClientService(mockProvider.getUrl());
     Book expected = new Book("9780132350884", "Robert Cecil Martin",
             "Clean Code", "Prentice Hall");

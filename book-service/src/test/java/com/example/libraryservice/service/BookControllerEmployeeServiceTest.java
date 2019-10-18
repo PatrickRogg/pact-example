@@ -90,8 +90,8 @@ public class BookControllerEmployeeServiceTest {
     doThrow(new IsbnNotFoundException()).when(bookService).update(eq("0"), any());
   }
 
-  @State("deleteBook")
-  public void deleteBook() {
+  @State("deleteBookBy")
+  public void deleteBookBy() {
     doNothing().when(bookService);
   }
 

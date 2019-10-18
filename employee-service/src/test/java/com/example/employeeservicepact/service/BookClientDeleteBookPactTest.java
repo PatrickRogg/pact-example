@@ -10,9 +10,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.http.ResponseEntity;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.junit.Assert.assertEquals;
 
 public class BookClientDeleteBookPactTest {
@@ -24,7 +21,7 @@ public class BookClientDeleteBookPactTest {
   @Pact(consumer="employee_service")
   public RequestResponsePact createUpdateBookPact(PactDslWithProvider builder) {
     return builder
-            .given("deleteBook")
+            .given("deleteBookBy")
             .uponReceiving("request to delete a book")
             .path("/books/123456789")
             .method("DELETE")
@@ -35,9 +32,9 @@ public class BookClientDeleteBookPactTest {
 
   @Test
   @PactVerification
-  public void should_return_http_status_200_when_delete_book() {
+  public void shouldReturnStatusCode200WhenDeleteBookBy() {
     bookClientService = new BookClientService(mockProvider.getUrl());
-    ResponseEntity<?> response = bookClientService.deleteBook("123456789");
+    ResponseEntity<?> response = bookClientService.deleteBookBy("123456789");
 
     assertEquals(200, response.getStatusCode().value());
   }

@@ -50,7 +50,7 @@ public class BookClientUpdateBookWithNoIsbnPactTest {
 
   @Test
   @PactVerification
-  public void should_return_http_status_400_when_update_book_isbn_could_not_be_found() {
+  public void shouldReturnStatusCode400AndErrorMessageWhenUpdateBookWithNoIsbn() {
     bookClientService = new BookClientService(mockProvider.getUrl());
     Book book = new Book();
     book.setAuthor("Robert Cecil Martin");

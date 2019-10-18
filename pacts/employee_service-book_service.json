@@ -101,6 +101,21 @@
             ]
         },
         {
+            "description": "request to delete a book",
+            "request": {
+                "method": "DELETE",
+                "path": "/books/123456789"
+            },
+            "response": {
+                "status": 200
+            },
+            "providerStates": [
+                {
+                    "name": "deleteBookBy"
+                }
+            ]
+        },
+        {
             "description": "request to delete a book, but isbn in path variable could not be found",
             "request": {
                 "method": "DELETE",
@@ -113,21 +128,6 @@
             "providerStates": [
                 {
                     "name": "deleteBookWithNoMatchingIsbn"
-                }
-            ]
-        },
-        {
-            "description": "request to delete a book",
-            "request": {
-                "method": "DELETE",
-                "path": "/books/123456789"
-            },
-            "response": {
-                "status": 200
-            },
-            "providerStates": [
-                {
-                    "name": "deleteBook"
                 }
             ]
         },

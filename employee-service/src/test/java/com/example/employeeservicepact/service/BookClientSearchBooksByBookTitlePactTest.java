@@ -51,7 +51,7 @@ public class BookClientSearchBooksByBookTitlePactTest {
 
   @Test
   @PactVerification
-  public void should_return_http_status_200_and_all_books_with_search_term_in_title_when_get_book_by_book_titles() {
+  public void shouldReturnStatusCode200AndAllBooksMatchingTitleWhenSearchBookBy() {
     bookClientService = new BookClientService(mockProvider.getUrl());
     Book[] expected = {new Book("9780132350884", "Robert Cecil Martin",
             "Clean Code", "Prentice Hall")};

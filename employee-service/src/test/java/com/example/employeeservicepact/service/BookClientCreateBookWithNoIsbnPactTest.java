@@ -50,7 +50,7 @@ public class BookClientCreateBookWithNoIsbnPactTest {
 
   @Test
   @PactVerification
-  public void should_return_http_status_404_and_error_message_when_create_book_without_isbn() {
+  public void shouldReturnStatusCode400AndErrorMessageWhenCreateBookByWithNoIsbn() {
     bookClientService = new BookClientService(mockProvider.getUrl());
     Book book = new Book();
     book.setAuthor("Robert Cecil Martin");

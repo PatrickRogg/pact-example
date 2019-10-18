@@ -50,7 +50,7 @@ public class BookClientUpdateBookWithNoMatchingIsbnPactTest {
 
   @Test
   @PactVerification
-  public void should_return_http_status_409_and_error_message_when_update_book_was_called_with_() {
+  public void shouldReturnStatusCode404AndErrorMessageWhenUpdateBookWithInvalidIsbn() {
     bookClientService = new BookClientService(mockProvider.getUrl());
     Book book = new Book("9780132350883", "Robert Cecil Martin",
             "Clean Code", "Prentice Hall");

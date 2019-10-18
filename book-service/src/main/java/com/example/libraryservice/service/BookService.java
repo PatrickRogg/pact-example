@@ -5,8 +5,6 @@ import com.example.libraryservice.exceptions.IsbnNotFoundException;
 import com.example.libraryservice.repository.BookRepository;
 import com.example.libraryservice.repository.specification.BookSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

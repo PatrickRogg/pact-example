@@ -57,7 +57,7 @@ public class BookClientService {
     }
   }
 
-  public ResponseEntity<?> deleteBook(String isbn) {
+  public ResponseEntity<?> deleteBookBy(String isbn) {
     try {
       restTemplate.delete(bookServiceUrl + "/books/" + isbn);
       return new ResponseEntity<>(HttpStatus.OK);
@@ -65,15 +65,5 @@ public class BookClientService {
       return ResponseEntity.status(e.getRawStatusCode()).headers(e.getResponseHeaders())
               .body(e.getResponseBodyAsString());
     }
-  }
-
-  @PostConstruct
-  public void test() {
-    System.out.println(Arrays.toString((Book[]) searchBooksBy("Tom").getBody()));
-    System.out.println(getBookBy("9783866801921"));
-    System.out.println(createBook(new Book("hallo", "hallo", "hallo", "hallo")));
-    System.out.println(getBookBy("hallo"));
-    System.out.println(updateBook("hall", new Book("hallo", "hallo", "hallo", "hallo")));
-    System.out.println(deleteBook("123"));
   }
 }

@@ -33,9 +33,9 @@ public class BookClientDeleteWithNoMatchingIsbnBookPactTest {
 
   @Test
   @PactVerification
-  public void should_return_http_status_404_when_delete_book_was_called_with_no_matching_isbn() {
+  public void shouldReturnStatusCode404AndErrorMessageWhenDeleteBookByWithInvalidIsbn() {
     bookClientService = new BookClientService(mockProvider.getUrl());
-    ResponseEntity<?> response = bookClientService.deleteBook("0");
+    ResponseEntity<?> response = bookClientService.deleteBookBy("0");
 
     assertEquals(404, response.getStatusCode().value());
     assertEquals("Isbn not found", response.getBody());
