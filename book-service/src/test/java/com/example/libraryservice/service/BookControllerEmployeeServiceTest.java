@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -76,34 +77,33 @@ public class BookControllerEmployeeServiceTest {
   @State("createBook")
   public void createBook() {
     Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
-    when(bookRepository.save(any())).thenReturn(book);
+    when(bookRepository.save(any())).then(i -> (Book) i.getArgument(0));
   }
 
   @State("createBookWithNoIsbn")
   public void createBookWithNoIsbn() {
     Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
-    when(bookRepository.save(any())).thenReturn(book);
+    when(bookRepository.save(any())).then(i -> (Book) i.getArgument(0));
   }
 
   @State("updateBook")
   public void updateBook() {
     Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
     when(bookRepository.findById(anyString())).thenReturn(Optional.of(book));
-    when(bookRepository.save(any())).thenReturn(book);
+    when(bookRepository.save(any())).then(i -> (Book) i.getArgument(0));
   }
 
   @State("updateBookWithNoIsbn")
   public void updateBookWithNoIsbn() {
     Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
-    when(bookRepository.save(any())).thenReturn(book);
+    when(bookRepository.save(any())).then(i -> (Book) i.getArgument(0));
   }
 
   @State("updateBookWithNoMatchingIsbn")
   public void updateBookWithNoMatchingIsbn() throws IsbnNotFoundException {
     Book oldBook = new Book("123456789", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
-    Book updatedBook = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
     when(bookRepository.findById("123456789")).thenReturn(Optional.of(oldBook));
-    when(bookRepository.save(any())).thenReturn(updatedBook);
+    when(bookRepository.save(any())).then(i -> (Book) i.getArgument(0));
   }
 
   @State("deleteBookBy")
