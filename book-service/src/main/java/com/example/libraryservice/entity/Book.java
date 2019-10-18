@@ -8,14 +8,10 @@ import java.util.Objects;
 @Entity
 public class Book {
   @Id
-  @NotNull
-  private String isbn;
-  @NotNull
-  private String author;
-  @NotNull
-  private String title;
-  @NotNull
-  private String publisher;
+  @NotNull private String isbn;
+  @NotNull private String author;
+  @NotNull private String title;
+  @NotNull private String publisher;
 
   public Book(String isbn, String author, String title, String publisher) {
     this.isbn = isbn;
