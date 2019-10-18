@@ -88,7 +88,7 @@ public class BookControllerEmployeeServiceTest {
 
   @State("updateBook")
   public void updateBook() {
-    Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
+    Book book = new Book("123456789", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
     when(bookRepository.findById(anyString())).thenReturn(Optional.of(book));
     when(bookRepository.save(any())).then(i -> (Book) i.getArgument(0));
   }
