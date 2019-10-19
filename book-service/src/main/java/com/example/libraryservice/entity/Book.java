@@ -9,11 +9,11 @@ import java.util.Objects;
 public class Book {
   @Id
   @NotNull private String isbn;
-  @NotNull private String author;
+  @NotNull private String[] author;
   @NotNull private String title;
   @NotNull private String publisher;
 
-  public Book(String isbn, String author, String title, String publisher) {
+  public Book(String isbn, String[] author, String title, String publisher) {
     this.isbn = isbn;
     this.author = author;
     this.title = title;
@@ -31,11 +31,11 @@ public class Book {
     this.isbn = isbn;
   }
 
-  public String getAuthor() {
+  public String[] getAuthor() {
     return author;
   }
 
-  public void setAuthor(String author) {
+  public void setAuthor(String[] author) {
     this.author = author;
   }
 

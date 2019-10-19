@@ -49,26 +49,25 @@ public class BookControllerEmployeeServiceTest {
   public void getAllBooks() {
     // arrange
     List<Book> books = new ArrayList<>();
-    books.add(new Book("9780132350884", "Robert Cecil Martin",
+    books.add(new Book("9780132350884", new String[]{"Robert Cecil Martin"},
             "Clean Code", "Prentice Hall"));
     when(bookRepository.findAll()).thenReturn(books);
   }
 
   @State("getBookByIsbn")
   public void getBookByIsbn() throws IsbnNotFoundException {
-    Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
+    Book book = new Book("9780132350884", new String[]{"Robert Cecil Martin"}, "Clean Code", "Prentice Hall");
     when(bookRepository.findById("9780132350884")).thenReturn(Optional.of(book));
   }
 
   @State("getBookByIsbnWithNoMatchingIsbn")
   public void getBookByIsbnWithNoMatchingIsbn() throws IsbnNotFoundException {
-    Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
     when(bookRepository.findById(anyString())).thenReturn(Optional.empty());
   }
 
   @State("searchBookByBookTitle")
   public void searchBookByBookTitle() {
-    Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
+    Book book = new Book("9780132350884", new String[]{"Robert Cecil Martin"}, "Clean Code", "Prentice Hall");
     List<Book> books = new ArrayList<>();
     books.add(book);
     when(bookRepository.findByTitle("Clean")).thenReturn(books);
@@ -76,32 +75,29 @@ public class BookControllerEmployeeServiceTest {
 
   @State("createBook")
   public void createBook() {
-    Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
     when(bookRepository.save(any())).then(i -> (Book) i.getArgument(0));
   }
 
   @State("createBookWithNoIsbn")
   public void createBookWithNoIsbn() {
-    Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
     when(bookRepository.save(any())).then(i -> (Book) i.getArgument(0));
   }
 
   @State("updateBook")
   public void updateBook() {
-    Book book = new Book("123456789", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
+    Book book = new Book("123456789", new String[]{"Robert Cecil Martin"}, "Clean Code", "Prentice Hall");
     when(bookRepository.findById(anyString())).thenReturn(Optional.of(book));
     when(bookRepository.save(any())).then(i -> (Book) i.getArgument(0));
   }
 
   @State("updateBookWithNoIsbn")
   public void updateBookWithNoIsbn() {
-    Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
     when(bookRepository.save(any())).then(i -> (Book) i.getArgument(0));
   }
 
   @State("updateBookWithNoMatchingIsbn")
   public void updateBookWithNoMatchingIsbn() throws IsbnNotFoundException {
-    Book oldBook = new Book("123456789", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
+    Book oldBook = new Book("123456789", new String[]{"Robert Cecil Martin"}, "Clean Code", "Prentice Hall");
     when(bookRepository.findById("123456789")).thenReturn(Optional.of(oldBook));
     when(bookRepository.save(any())).then(i -> (Book) i.getArgument(0));
   }
