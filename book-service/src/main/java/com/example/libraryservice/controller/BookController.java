@@ -40,7 +40,7 @@ public class BookController {
       Book book = bookService.getBookByIsbn(isbn);
       return ResponseEntity.status(200).body(book);
     } catch (IsbnNotFoundException e) {
-      return ResponseEntity.status(404).body(e.getMessage());
+      return ResponseEntity.status(400).body(e.getMessage());
     }
   }
 
