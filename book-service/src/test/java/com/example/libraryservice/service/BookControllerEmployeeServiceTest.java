@@ -62,7 +62,6 @@ public class BookControllerEmployeeServiceTest {
 
   @State("getBookByIsbnWithNoMatchingIsbn")
   public void getBookByIsbnWithNoMatchingIsbn() throws IsbnNotFoundException {
-    Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
     when(bookRepository.findById(anyString())).thenReturn(Optional.empty());
   }
 
@@ -76,13 +75,11 @@ public class BookControllerEmployeeServiceTest {
 
   @State("createBook")
   public void createBook() {
-    Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
     when(bookRepository.save(any())).then(i -> (Book) i.getArgument(0));
   }
 
   @State("createBookWithNoIsbn")
   public void createBookWithNoIsbn() {
-    Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
     when(bookRepository.save(any())).then(i -> (Book) i.getArgument(0));
   }
 
