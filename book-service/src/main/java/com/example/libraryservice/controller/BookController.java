@@ -56,7 +56,7 @@ public class BookController {
     return ResponseEntity.status(201).contentType(MediaType.APPLICATION_JSON_UTF8).body(createdBook);
   }
 
-  @PutMapping("{isbn}")
+  @PostMapping("{isbn}")
   public ResponseEntity<?> updateBook(@PathVariable String isbn, @RequestBody @Valid Book book) {
     try {
       bookService.update(isbn, book);
