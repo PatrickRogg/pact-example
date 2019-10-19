@@ -49,7 +49,7 @@ public class BookService {
     }
   }
 
-  public List<Book> filterBooksBy(String bookTitle) {
-    return bookRepository.findByTitle(bookTitle);
+  public List<Book> filterBooksBy(String bookTitle, String bookAuthor) {
+    return bookRepository.findByTitleAndAuthor(bookTitle, bookAuthor);
   }
 }

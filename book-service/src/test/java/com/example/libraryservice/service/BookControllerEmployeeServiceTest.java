@@ -70,7 +70,7 @@ public class BookControllerEmployeeServiceTest {
     Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
     List<Book> books = new ArrayList<>();
     books.add(book);
-    when(bookRepository.findByTitle("Clean")).thenReturn(books);
+    when(bookRepository.findByTitleAndAuthor("Clean", "Robert Cecil Martin")).thenReturn(books);
   }
 
   @State("createBook")

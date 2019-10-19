@@ -45,8 +45,9 @@ public class BookController {
   }
 
   @GetMapping("search")
-  public ResponseEntity<?> searchBooksBy(@RequestParam String bookTitle) {
-    List<Book> filteredBooks = bookService.filterBooksBy(bookTitle);
+  public ResponseEntity<?> searchBooksBy(@RequestParam String bookTitle,
+                                         @RequestParam String bookAuthor) {
+    List<Book> filteredBooks = bookService.filterBooksBy(bookTitle, bookAuthor);
     return ResponseEntity.status(200).body(filteredBooks);
   }
 
@@ -76,9 +77,15 @@ public class BookController {
     }
   }
 
-  @ExceptionHandler(MethodArgumentNotValidException.class)
+  @ExceptionHandler({MethodArgumentNotValidException.class})
   public ResponseEntity<?> handleIOException(MethodArgumentNotValidException ex, HttpServletRequest request) {
     String errorMessage = ex.getBindingResult().getFieldError().getField() + " must not be null";
+    return ResponseEntity.status(400).body(errorMessage);
+  }
+
+  @ExceptionHandler(MissingServletRequestParameterException.class)
+  public ResponseEntity<?> handleMissingParams(MissingServletRequestParameterException ex) {
+    String errorMessage = ex.getParameterName() + " parameter is missing";
     return ResponseEntity.status(400).body(errorMessage);
   }
 }
