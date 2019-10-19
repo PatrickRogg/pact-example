@@ -11,13 +11,11 @@ public class Book {
   @NotNull private String isbn;
   @NotNull private String author;
   @NotNull private String title;
-  @NotNull private String publisher;
 
   public Book(String isbn, String author, String title, String publisher) {
     this.isbn = isbn;
     this.author = author;
     this.title = title;
-    this.publisher = publisher;
   }
 
   public Book() {
@@ -47,14 +45,6 @@ public class Book {
     this.title = title;
   }
 
-  public String getPublisher() {
-    return publisher;
-  }
-
-  public void setPublisher(String publisher) {
-    this.publisher = publisher;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -62,12 +52,11 @@ public class Book {
     Book book = (Book) o;
     return isbn.equals(book.isbn) &&
             author.equals(book.author) &&
-            title.equals(book.title) &&
-            publisher.equals(book.publisher);
+            title.equals(book.title);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(isbn, author, title, publisher);
+    return Objects.hash(isbn, author, title);
   }
 }
