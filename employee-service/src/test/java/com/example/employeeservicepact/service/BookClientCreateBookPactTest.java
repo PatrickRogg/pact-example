@@ -34,13 +34,15 @@ public class BookClientCreateBookPactTest {
                 .stringValue("isbn", "9780132350884")
                 .stringValue("author", "Robert Cecil Martin")
                 .stringValue("title", "Clean Code")
-                .stringValue("publisher", "Prentice Hall");
+                .stringValue("publisher", "Prentice Hall")
+                .numberValue("priceInCents", 2000);
 
     DslPart response = new PactDslJsonBody()
             .stringType("isbn", "9780132350884")
             .stringType("author", "Robert Cecil Martin")
             .stringType("title", "Clean Code")
-            .stringType("publisher", "Prentice Hall");
+            .stringType("publisher", "Prentice Hall")
+            .numberType("priceInCents", 2000);
 
     return builder
             .given("createBook")
@@ -61,7 +63,7 @@ public class BookClientCreateBookPactTest {
   public void shouldReturnStatusCode200AndAllBooksWhenGetAllBooks() {
     bookClientService = new BookClientService(mockProvider.getUrl());
     Book expected = new Book("9780132350884", "Robert Cecil Martin",
-            "Clean Code", "Prentice Hall");
+            "Clean Code", "Prentice Hall", 2000);
     ResponseEntity<Book> response = (ResponseEntity<Book>) bookClientService.createBook(expected);
 
     assertEquals(201, response.getStatusCode().value());

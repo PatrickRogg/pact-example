@@ -35,6 +35,7 @@ public class BookClientGetAllBooksPactTest {
             .stringType("author", "Robert Cecil Martin")
             .stringType("title", "Clean Code")
             .stringType("publisher", "Prentice Hall")
+            .numberType("priceInCents", 2000)
             .closeObject();
 
     return builder
@@ -55,8 +56,8 @@ public class BookClientGetAllBooksPactTest {
     // arrange
     bookClientService = new BookClientService(mockProvider.getUrl());
     Book[] expected = {
-            new Book("9780132350884", "Robert Cecil Martin", "Clean Code",
-                    "Prentice Hall")
+            new Book("9780132350884", "Robert Cecil Martin",
+            "Clean Code", "Prentice Hall", 2000)
     };
 
     // act

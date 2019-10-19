@@ -35,6 +35,7 @@ public class BookClientSearchBooksByBookTitlePactTest {
             .stringType("author", "Robert Cecil Martin")
             .stringType("title", "Clean Code")
             .stringType("publisher", "Prentice Hall")
+            .numberValue("priceInCents", 2000)
             .closeObject();
     return builder
             .given("searchBookByBookTitle")
@@ -53,8 +54,10 @@ public class BookClientSearchBooksByBookTitlePactTest {
   @PactVerification
   public void shouldReturnStatusCode200AndAllBooksMatchingTitleWhenSearchBookBy() {
     bookClientService = new BookClientService(mockProvider.getUrl());
-    Book[] expected = {new Book("9780132350884", "Robert Cecil Martin",
-            "Clean Code", "Prentice Hall")};
+    Book[] expected = {
+            new Book("9780132350884", "Robert Cecil Martin",
+            "Clean Code", "Prentice Hall", 2000)
+    };
     ResponseEntity<Book[]> response = (ResponseEntity<Book[]>) bookClientService.searchBooksBy("Clean");
 
     assertEquals(200, response.getStatusCode().value());

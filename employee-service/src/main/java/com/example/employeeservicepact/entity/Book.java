@@ -8,12 +8,14 @@ public class Book {
   private String author;
   private String title;
   private String publisher;
+  private int priceInCents;
 
-  public Book(String isbn, String author, String title, String publisher) {
+  public Book(String isbn, String author, String title, String publisher, int priceInCents) {
     this.isbn = isbn;
     this.author = author;
     this.title = title;
     this.publisher = publisher;
+    this.priceInCents = priceInCents;
   }
 
   public Book() {
@@ -51,9 +53,12 @@ public class Book {
     this.publisher = publisher;
   }
 
-  @Override
-  public String toString() {
-    return  "isbn: " + isbn + " author: " + author + " title:" + title + "publisher: " + publisher;
+  public int getPriceInCents() {
+    return priceInCents;
+  }
+
+  public void setPriceInCents(int priceInCents) {
+    this.priceInCents = priceInCents;
   }
 
   @Override
@@ -61,7 +66,8 @@ public class Book {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Book book = (Book) o;
-    return isbn.equals(book.isbn) &&
+    return priceInCents == book.priceInCents &&
+            isbn.equals(book.isbn) &&
             author.equals(book.author) &&
             title.equals(book.title) &&
             publisher.equals(book.publisher);
@@ -69,6 +75,6 @@ public class Book {
 
   @Override
   public int hashCode() {
-    return Objects.hash(isbn, author, title, publisher);
+    return Objects.hash(isbn, author, title, publisher, priceInCents);
   }
 }

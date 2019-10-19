@@ -33,7 +33,8 @@ public class BookClientUpdateBookWithNoIsbnPactTest {
             .nullValue("isbn")
             .stringValue("author", "Robert Cecil Martin")
             .stringValue("title", "Clean Code")
-            .stringValue("publisher", "Prentice Hall");
+            .stringValue("publisher", "Prentice Hall")
+            .numberValue("priceInCents", 2000);
 
     return builder
             .given("updateBookWithNoIsbn")
@@ -56,6 +57,7 @@ public class BookClientUpdateBookWithNoIsbnPactTest {
     book.setAuthor("Robert Cecil Martin");
     book.setPublisher("Prentice Hall");
     book.setTitle("Clean Code");
+    book.setPriceInCents(2000);
     ResponseEntity<?> response = bookClientService.updateBook("123456789", book);
 
     assertEquals(400, response.getStatusCode().value());

@@ -33,7 +33,8 @@ public class BookClientGetBooksByIsbnPactTest {
             .stringType("isbn", "9780132350884")
             .stringType("author", "Robert Cecil Martin")
             .stringType("title", "Clean Code")
-            .stringType("publisher", "Prentice Hall");
+            .stringType("publisher", "Prentice Hall")
+            .numberValue("priceInCents", 2000);
 
     return builder
             .given("getBookByIsbn")
@@ -52,7 +53,7 @@ public class BookClientGetBooksByIsbnPactTest {
   public void shouldReturnStatusCode200AndBookWithIsbnWhenGetBookBy() {
     bookClientService = new BookClientService(mockProvider.getUrl());
     Book expected = new Book("9780132350884", "Robert Cecil Martin",
-            "Clean Code", "Prentice Hall");
+            "Clean Code", "Prentice Hall", 2000);
     ResponseEntity<Book> response = (ResponseEntity<Book>) bookClientService.getBookBy("9780132350884");
 
     assertEquals(200, response.getStatusCode().value());

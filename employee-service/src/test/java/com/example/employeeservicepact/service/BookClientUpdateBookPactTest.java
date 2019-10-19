@@ -30,10 +30,11 @@ public class BookClientUpdateBookPactTest {
     headers.put("Content-Type", "application/json;charset=UTF-8");
 
     DslPart request = new PactDslJsonBody()
-            .stringValue("isbn", "9780132350883")
+            .stringValue("isbn", "9780132350884")
             .stringValue("author", "Robert Cecil Martin")
             .stringValue("title", "Clean Code")
-            .stringValue("publisher", "Prentice Hall");
+            .stringValue("publisher", "Prentice Hall")
+            .numberValue("priceInCents", 2000);
 
     return builder
             .given("updateBook")
@@ -51,8 +52,8 @@ public class BookClientUpdateBookPactTest {
   @PactVerification
   public void shouldReturnStatusCode200WhenUpdateBook() {
     bookClientService = new BookClientService(mockProvider.getUrl());
-    Book book = new Book("9780132350883", "Robert Cecil Martin",
-            "Clean Code", "Prentice Hall");
+    Book book = new Book("9780132350884", "Robert Cecil Martin",
+            "Clean Code", "Prentice Hall", 2000);
     ResponseEntity<?> response = bookClientService.updateBook("123456789", book);
 
     assertEquals(200, response.getStatusCode().value());

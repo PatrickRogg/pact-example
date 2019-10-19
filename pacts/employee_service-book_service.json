@@ -17,6 +17,7 @@
                 "body": {
                     "author": "Robert Cecil Martin",
                     "isbn": null,
+                    "priceInCents": 2000,
                     "publisher": "Prentice Hall",
                     "title": "Clean Code"
                 }
@@ -42,6 +43,7 @@
                 "body": {
                     "author": "Robert Cecil Martin",
                     "isbn": "9780132350884",
+                    "priceInCents": 2000,
                     "publisher": "Prentice Hall",
                     "title": "Clean Code"
                 }
@@ -54,6 +56,7 @@
                 "body": {
                     "author": "Robert Cecil Martin",
                     "isbn": "9780132350884",
+                    "priceInCents": 2000,
                     "publisher": "Prentice Hall",
                     "title": "Clean Code"
                 },
@@ -71,6 +74,14 @@
                             "matchers": [
                                 {
                                     "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        },
+                        "$.priceInCents": {
+                            "matchers": [
+                                {
+                                    "match": "number"
                                 }
                             ],
                             "combine": "AND"
@@ -146,6 +157,7 @@
                     {
                         "author": "Robert Cecil Martin",
                         "isbn": "9780132350884",
+                        "priceInCents": 2000,
                         "publisher": "Prentice Hall",
                         "title": "Clean Code"
                     }
@@ -173,6 +185,14 @@
                             "matchers": [
                                 {
                                     "match": "type"
+                                }
+                            ],
+                            "combine": "AND"
+                        },
+                        "$[*].priceInCents": {
+                            "matchers": [
+                                {
+                                    "match": "number"
                                 }
                             ],
                             "combine": "AND"
@@ -232,6 +252,7 @@
                 "body": {
                     "author": "Robert Cecil Martin",
                     "isbn": "9780132350884",
+                    "priceInCents": 2000,
                     "publisher": "Prentice Hall",
                     "title": "Clean Code"
                 },
@@ -298,6 +319,7 @@
                     {
                         "author": "Robert Cecil Martin",
                         "isbn": "9780132350884",
+                        "priceInCents": 2000,
                         "publisher": "Prentice Hall",
                         "title": "Clean Code"
                     }
@@ -365,6 +387,7 @@
                 "body": {
                     "author": "Robert Cecil Martin",
                     "isbn": null,
+                    "priceInCents": 2000,
                     "publisher": "Prentice Hall",
                     "title": "Clean Code"
                 }
@@ -389,7 +412,8 @@
                 },
                 "body": {
                     "author": "Robert Cecil Martin",
-                    "isbn": "9780132350883",
+                    "isbn": "9780132350884",
+                    "priceInCents": 2000,
                     "publisher": "Prentice Hall",
                     "title": "Clean Code"
                 }
@@ -414,7 +438,8 @@
                 },
                 "body": {
                     "author": "Robert Cecil Martin",
-                    "isbn": "9780132350883",
+                    "isbn": "9780132350884",
+                    "priceInCents": 2000,
                     "publisher": "Prentice Hall",
                     "title": "Clean Code"
                 }
