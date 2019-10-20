@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ClassUtils;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -78,7 +79,14 @@ public class BookController {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<?> handleIOException(MethodArgumentNotValidException ex, HttpServletRequest request) {
-    String errorMessage = ex.getBindingResult().getFieldError().getField() + " must not be null";
+    StringBuilder sb = new StringBuilder();
+
+    for(FieldError error : ex.getBindingResult().getFieldErrors()) {
+      sb.append(error.getField() + ", ");
+    }
+
+    sb.setLength(sb.length() - 2);
+    String errorMessage = sb.toString() + " must not be null";
     return ResponseEntity.status(400).body(errorMessage);
   }
 }
