@@ -44,7 +44,7 @@ public class BookClientUpdateBookWithNoIsbnPactTest {
             .headers(headers)
             .willRespondWith()
             .status(400)
-            .body("Isbn can not be null")
+            .body("isbn must not be null")
             .toPact();
   }
 
@@ -59,5 +59,6 @@ public class BookClientUpdateBookWithNoIsbnPactTest {
     ResponseEntity<?> response = bookClientService.updateBook("123456789", book);
 
     assertEquals(400, response.getStatusCode().value());
+    assertEquals("isbn must not be null", response.getBody());
   }
 }

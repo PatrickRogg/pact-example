@@ -9,14 +9,18 @@ import au.com.dius.pact.provider.spring.target.MockMvcTarget;
 import com.example.libraryservice.controller.BookController;
 import com.example.libraryservice.entity.Book;
 import com.example.libraryservice.exceptions.IsbnNotFoundException;
+import com.example.libraryservice.repository.BookRepository;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -25,8 +29,11 @@ import static org.mockito.Mockito.*;
 @PactFolder("../pacts")
 public class BookControllerEmployeeServiceTest {
 
-  @Mock
+  @InjectMocks
   private BookService bookService;
+
+  @Mock
+  private BookRepository bookRepository;
 
   @TestTarget
   public final MockMvcTarget target = new MockMvcTarget();
@@ -43,60 +50,65 @@ public class BookControllerEmployeeServiceTest {
     // arrange
     List<Book> books = new ArrayList<>();
     books.add(new Book("9780132350884", "Robert Cecil Martin",
-            "Clean Code", "Prentice Hall"));
-    when(bookService.getAllBooks()).thenReturn(books);
+            "Clean Code", "Prentice Hall", 200));
+    when(bookRepository.findAll()).thenReturn(books);
   }
 
   @State("getBookByIsbn")
   public void getBookByIsbn() throws IsbnNotFoundException {
-    Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
-    when(bookService.getBookByIsbn("9780132350884")).thenReturn(book);
+    Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall", 200);
+    when(bookRepository.findById("9780132350884")).thenReturn(Optional.of(book));
   }
 
   @State("getBookByIsbnWithNoMatchingIsbn")
   public void getBookByIsbnWithNoMatchingIsbn() throws IsbnNotFoundException {
-    when(bookService.getBookByIsbn(eq("0"))).thenThrow(new IsbnNotFoundException());
+    when(bookRepository.findById(anyString())).thenReturn(Optional.empty());
   }
 
   @State("searchBookByBookTitle")
   public void searchBookByBookTitle() {
-    Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
+    Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall", 200);
     List<Book> books = new ArrayList<>();
     books.add(book);
-    when(bookService.filterBooksBy("Clean")).thenReturn(books);
+    when(bookRepository.findByTitle("Clean")).thenReturn(books);
   }
 
   @State("createBook")
   public void createBook() {
-    Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall");
-    when(bookService.create(any())).thenReturn(book);
+    when(bookRepository.save(any())).then(i -> (Book) i.getArgument(0));
   }
 
   @State("createBookWithNoIsbn")
   public void createBookWithNoIsbn() {
+    when(bookRepository.save(any())).then(i -> (Book) i.getArgument(0));
   }
 
   @State("updateBook")
   public void updateBook() {
-    doNothing().when(bookService);
+    Book book = new Book("123456789", "Robert Cecil Martin", "Clean Code", "Prentice Hall", 200);
+    when(bookRepository.findById(anyString())).thenReturn(Optional.of(book));
+    when(bookRepository.save(any())).then(i -> (Book) i.getArgument(0));
   }
 
   @State("updateBookWithNoIsbn")
   public void updateBookWithNoIsbn() {
+    Book book = new Book("9780132350884", "Robert Cecil Martin", "Clean Code", "Prentice Hall", 200);
+    when(bookRepository.save(any())).then(i -> (Book) i.getArgument(0));
   }
 
   @State("updateBookWithNoMatchingIsbn")
   public void updateBookWithNoMatchingIsbn() throws IsbnNotFoundException {
-    doThrow(new IsbnNotFoundException()).when(bookService).update(eq("0"), any());
+    Book oldBook = new Book("123456789", "Robert Cecil Martin", "Clean Code", "Prentice Hall", 200);
+    when(bookRepository.findById("123456789")).thenReturn(Optional.of(oldBook));
+    when(bookRepository.save(any())).then(i -> (Book) i.getArgument(0));
   }
 
   @State("deleteBookBy")
   public void deleteBookBy() {
-    doNothing().when(bookService);
+    when(bookRepository.findById(anyString())).thenReturn(Optional.of(new Book()));
   }
 
   @State("deleteBookWithNoMatchingIsbn")
-  public void deleteBookWithNoMatchingIsbn() throws IsbnNotFoundException {
-    doThrow(new IsbnNotFoundException()).when(bookService).deleteBookBy(eq("0"));
+  public void deleteBookWithNoMatchingIsbn() {
   }
 }
